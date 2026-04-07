@@ -12,7 +12,6 @@ public class CargadorObjetos
 
     public void ProcesarArchivo(string fileName)
     {
-
         // Start is called before the first frame update
         string path = "Assets/Modelos3D/" + fileName + ".obj";
 
@@ -21,18 +20,16 @@ public class CargadorObjetos
         Debug.Log(File.Exists(path));
 
         StreamReader reader = new StreamReader(path);
-        string fileData = (reader.ReadToEnd());
-
-
+        string fileData = reader.ReadToEnd();
 
         reader.Close();
         Debug.Log(fileData);
-
 
         List<Vector3> verticesLista = new List<Vector3>();
         List<int> carasLista = new List<int>();
 
         string[] lines = fileData.Split('\n');
+        
         for (int i = 0; i < lines.Length; i++)
         {
             if (lines[i].StartsWith("v "))
@@ -86,22 +83,38 @@ public class CargadorObjetos
                 }
             }
         }
+        
+        CentrarObjeto(verticesLista);
+        
         vertices = verticesLista.ToArray();
         triangles = carasLista.ToArray();
-
     }
-    public Vector3 CalcularCentro() //para centarr la cama en el origen, calculo el centro con vertice mas lejano y mas cercano y promedio
+
+    private void CentrarObjeto(List<Vector3> verticesLista)
     {
-        Vector3 min = vertices[0];
-        Vector3 max = vertices[0];
+        Vector3 min = verticesLista[0];
+        Vector3 max = verticesLista[0];
 
-        for (int i = 1; i < vertices.Length; i++)
+        foreach (Vector3 v in verticesLista)
         {
-            min = Vector3.Min(min, vertices[i]);
-            max = Vector3.Max(max, vertices[i]);
+            if (v.x < min.x) min.x = v.x;
+            if (v.y < min.y) min.y = v.y;
+            if (v.z < min.z) min.z = v.z;
+
+            if (v.x > max.x) max.x = v.x;
+            if (v.y > max.y) max.y = v.y;
+            if (v.z > max.z) max.z = v.z;
         }
-        return (min + max) / 2f;
+
+        Vector3 centro = new Vector3(
+            (min.x + max.x) / 2f,
+            (min.y + max.y) / 2f,
+            (min.z + max.z) / 2f
+        );
+
+        for (int i = 0; i < verticesLista.Count; i++)
+        {
+            verticesLista[i] = verticesLista[i] - centro;
+        }
     }
-
-
 }

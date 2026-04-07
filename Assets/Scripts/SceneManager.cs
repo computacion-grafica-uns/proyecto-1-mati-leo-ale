@@ -24,19 +24,29 @@ public class SceneManager : MonoBehaviour {
         objetosACargar.Add(new DatosObjeto {
             nombreArchivo = "pared_lisa",
             nombreGameObject = "Pared",
-            posicion = new Vector3(0, 1.5f, 0),
+            posicion = new Vector3(0, -1.5f, 0),
             rotacion = new Vector3(0, 0, 0),
-            escala = new Vector3(3, 1, 1),
-            colorPrincipal = Color.cyan
+            escala = new Vector3(5, 1, 1),
+            colorPrincipal = Color.blue
         });
 
         objetosACargar.Add(new DatosObjeto {
             nombreArchivo = "pared_lisa",
             nombreGameObject = "Pared2",
-            posicion = new Vector3(1.5f, 1.5f, 0),
+            posicion = new Vector3(0, 1.5f, 0),
             rotacion = new Vector3(0, 0, 0),
-            escala = new Vector3(1, 1, 1),
-            colorPrincipal = Color.red
+            escala = new Vector3(5, 1, 1),
+            colorPrincipal = Color.yellow
+        });
+
+        objetosACargar.Add(new DatosObjeto
+        {
+            nombreArchivo = "pared_lisa",
+            nombreGameObject = "Pared2",
+            posicion = new Vector3(0, 4.5f, 0),
+            rotacion = new Vector3(0, 0, 0),
+            escala = new Vector3(5, 1, 1),
+            colorPrincipal = Color.blue
         });
     }
 

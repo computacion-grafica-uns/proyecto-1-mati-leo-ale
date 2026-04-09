@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -24,7 +25,7 @@ public class SceneManager : MonoBehaviour {
             posicion = new Vector3(-0.3f, 1.5f, 0),
             rotacion = new Vector3(0, 0, 0),
             escala = new Vector3(0.2f, 3, 1),
-            colorPrincipal = Color.blue
+            colorPrincipal = Color.grey
         });
 
         objetosACargar.Add(new DatosObjeto {
@@ -33,7 +34,7 @@ public class SceneManager : MonoBehaviour {
             posicion = new Vector3(0.2f, 2.5f, 0),
             rotacion = new Vector3(0, 0, 0),
             escala = new Vector3(0.8f, 1, 1),
-            colorPrincipal = Color.yellow
+            colorPrincipal = Color.grey
         });
      
         objetosACargar.Add(new DatosObjeto
@@ -43,7 +44,97 @@ public class SceneManager : MonoBehaviour {
             posicion = new Vector3(2.1f, 1.5f, 0),
             rotacion = new Vector3(0, 0, 0),
             escala = new Vector3(3, 3, 1),
-            colorPrincipal = Color.blue
+            colorPrincipal = Color.grey
+        });
+
+        objetosACargar.Add(new DatosObjeto
+        {
+            nombreArchivo = "pared_lisa",
+            nombreGameObject = "Pared_Vecino1",
+            posicion = new Vector3(-0.5f, 1.5f, 4.9f),
+            rotacion = new Vector3(0, 90, 0),
+            escala = new Vector3(10, 3, 1),
+            colorPrincipal = Color.grey
+        });
+
+        objetosACargar.Add(new DatosObjeto
+        {
+            nombreArchivo = "pared_lisa",
+            nombreGameObject = "Pared_Baño1",
+            posicion = new Vector3(1.2f, 1.5f, 0.2f),
+            rotacion = new Vector3(0, 90, 0),
+            escala = new Vector3(0.2f, 3, 1),
+            colorPrincipal = Color.grey
+        });
+
+        objetosACargar.Add(new DatosObjeto
+        {
+            nombreArchivo = "pared_lisa",
+            nombreGameObject = "Pared_Baño2",
+            posicion = new Vector3(1.2f, 2.5f, 0.7f),
+            rotacion = new Vector3(0, 90, 0),
+            escala = new Vector3(0.8f, 1, 1),
+            colorPrincipal = Color.grey
+        });
+
+        objetosACargar.Add(new DatosObjeto
+        {
+            nombreArchivo = "pared_lisa",
+            nombreGameObject = "Pared_Baño3",
+            posicion = new Vector3(1.2f, 1.5f, 1.85f),
+            rotacion = new Vector3(0, 90, 0),
+            escala = new Vector3(1.5f, 3, 1),
+            colorPrincipal = Color.grey
+        });
+
+        objetosACargar.Add(new DatosObjeto
+        {
+            nombreArchivo = "pared_lisa",
+            nombreGameObject = "Pared_Cocina",
+            posicion = new Vector3(2.45f, 1.5f, 2.5f),
+            rotacion = new Vector3(0, 0, 0),
+            escala = new Vector3(2.3f, 3, 1),
+            colorPrincipal = Color.grey
+        });
+
+        objetosACargar.Add(new DatosObjeto
+        {
+            nombreArchivo = "pared_lisa",
+            nombreGameObject = "Pared_Ventana1",
+            posicion = new Vector3(-0.3f, 1.5f, 9.8f),
+            rotacion = new Vector3(0, 0, 0),
+            escala = new Vector3(0.2f, 3, 1),
+            colorPrincipal = Color.grey
+        });
+
+        objetosACargar.Add(new DatosObjeto
+        {
+            nombreArchivo = "pared_lisa",
+            nombreGameObject = "Pared_Ventana2",
+            posicion = new Vector3(1.6f, 2.5f, 9.8f),
+            rotacion = new Vector3(0, 0, 0),
+            escala = new Vector3(3.6f, 1, 1),
+            colorPrincipal = Color.grey
+        });
+
+        objetosACargar.Add(new DatosObjeto
+        {
+            nombreArchivo = "pared_lisa",
+            nombreGameObject = "Pared_Ventana3",
+            posicion = new Vector3(3.5f, 1.5f, 9.8f),
+            rotacion = new Vector3(0, 0, 0),
+            escala = new Vector3(0.2f, 3, 1),
+            colorPrincipal = Color.grey
+        });
+
+        objetosACargar.Add(new DatosObjeto
+        {
+            nombreArchivo = "pared_lisa",
+            nombreGameObject = "Pared_Vecino2",
+            posicion = new Vector3(3.7f, 1.5f, 4.9f),
+            rotacion = new Vector3(0, 90, 0),
+            escala = new Vector3(10, 3, 1),
+            colorPrincipal = Color.grey
         });
     }
 

@@ -20,29 +20,29 @@ public class SceneManager : MonoBehaviour {
     private void CrearEscena(){
         objetosACargar.Add(new DatosObjeto {
             nombreArchivo = "pared_lisa",
-            nombreGameObject = "Pared",
-            posicion = new Vector3(0, -1.5f, 0),
+            nombreGameObject = "Pared_Puerta1",
+            posicion = new Vector3(-0.3f, 1.5f, 0),
             rotacion = new Vector3(0, 0, 0),
-            escala = new Vector3(5, 1, 1),
+            escala = new Vector3(0.2f, 3, 1),
             colorPrincipal = Color.blue
         });
 
         objetosACargar.Add(new DatosObjeto {
             nombreArchivo = "pared_lisa",
-            nombreGameObject = "Pared2",
-            posicion = new Vector3(0, 1.5f, 0),
+            nombreGameObject = "Pared_puerta2",
+            posicion = new Vector3(0.2f, 2.5f, 0),
             rotacion = new Vector3(0, 0, 0),
-            escala = new Vector3(5, 1, 1),
+            escala = new Vector3(0.8f, 1, 1),
             colorPrincipal = Color.yellow
         });
-
+     
         objetosACargar.Add(new DatosObjeto
         {
             nombreArchivo = "pared_lisa",
-            nombreGameObject = "Pared2",
-            posicion = new Vector3(0, 4.5f, 0),
+            nombreGameObject = "Pared_Puerta3",
+            posicion = new Vector3(2.1f, 1.5f, 0),
             rotacion = new Vector3(0, 0, 0),
-            escala = new Vector3(5, 1, 1),
+            escala = new Vector3(3, 3, 1),
             colorPrincipal = Color.blue
         });
     }

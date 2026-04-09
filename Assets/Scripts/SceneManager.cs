@@ -6,11 +6,8 @@ public class SceneManager : MonoBehaviour {
     private List<DatosObjeto> objetosACargar = new List<DatosObjeto>();    
     private List<GameObject> objetosInstanciados = new List<GameObject>();
     private GameObject camara;
-    private Material material;
 
     void Start(){
-        material = new Material(Shader.Find("MyShader"));
-        
         CrearEscena();
 
         foreach (DatosObjeto datos in objetosACargar){
@@ -75,7 +72,7 @@ public class SceneManager : MonoBehaviour {
         nuevoObjeto.GetComponent<MeshFilter>().mesh.triangles = parser.triangles;
         nuevoObjeto.GetComponent<MeshFilter>().mesh.colors = coloresDeVertices;
 
-        Material materialUnico = new Material(material);
+        Material materialUnico = new Material(Shader.Find("MyShader"));
         Matrix4x4 matrizModelado = MVP.CreateModelMatrix(datos.posicion, datos.rotacion * Mathf.Deg2Rad, datos.escala);
         materialUnico.SetMatrix("_ModelMatrix", matrizModelado);
         nuevoObjeto.GetComponent<MeshRenderer>().material = materialUnico;

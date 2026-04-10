@@ -6,16 +6,30 @@ using UnityEngine;
 public class SceneManager : MonoBehaviour {
     private List<DatosObjeto> objetosACargar = new List<DatosObjeto>();    
     private List<GameObject> objetosInstanciados = new List<GameObject>();
-    private GameObject camara;
+    private GameObject lienzo;
+    private CamaraOrbital camaraOrbital;
 
     void Start(){
         CrearEscena();
-
         foreach (DatosObjeto datos in objetosACargar){
             InstanciarYConfigurarObjeto(datos);
         }
+        CreateLienzo();
+        camaraOrbital = new CamaraOrbital(Vector3.zero, 15f);
+        ActualizarMatrices(0, 0);
+    }
 
-        CreateCamera();
+    void Update(){
+        float deltaPhi = 0f;
+        float deltaTheta = 0f;
+
+        if (Input.GetKey(KeyCode.RightArrow)) deltaPhi = deltaPhi + 0.01f;
+        if (Input.GetKey(KeyCode.LeftArrow))  deltaPhi = deltaPhi - 0.01f;
+
+        if (Input.GetKey(KeyCode.UpArrow))    deltaTheta = deltaTheta - 0.01f; 
+        if (Input.GetKey(KeyCode.DownArrow))  deltaTheta = deltaTheta + 0.01f;
+
+        if (deltaPhi != 0 || deltaTheta != 0) ActualizarMatrices(deltaPhi, deltaTheta);
     }
     
     private void CrearEscena(){
@@ -138,12 +152,11 @@ public class SceneManager : MonoBehaviour {
         });
     }
 
-    private void CreateCamera(){
-        camara = new GameObject("Camara");
-        camara.AddComponent<Camera>();
-        camara.transform.position = new Vector3(0,0,-5);
-        camara.GetComponent<Camera>().clearFlags = CameraClearFlags.SolidColor;
-        camara.GetComponent<Camera>().backgroundColor = Color.black;
+    private void CreateLienzo(){
+        lienzo = new GameObject("Lienzo");
+        lienzo.AddComponent<Camera>();
+        lienzo.GetComponent<Camera>().clearFlags = CameraClearFlags.SolidColor;
+        lienzo.GetComponent<Camera>().backgroundColor = Color.black;
     }
 
     private void InstanciarYConfigurarObjeto(DatosObjeto datos){
@@ -162,6 +175,7 @@ public class SceneManager : MonoBehaviour {
         nuevoObjeto.GetComponent<MeshFilter>().mesh.vertices = parser.vertices;
         nuevoObjeto.GetComponent<MeshFilter>().mesh.triangles = parser.triangles;
         nuevoObjeto.GetComponent<MeshFilter>().mesh.colors = coloresDeVertices;
+        nuevoObjeto.GetComponent<MeshFilter>().mesh.bounds = new Bounds(Vector3.zero, Vector3.one * 10000f);
 
         Material materialUnico = new Material(Shader.Find("MyShader"));
         Matrix4x4 matrizModelado = MVP.CreateModelMatrix(datos.posicion, datos.rotacion * Mathf.Deg2Rad, datos.escala);
@@ -169,6 +183,13 @@ public class SceneManager : MonoBehaviour {
         nuevoObjeto.GetComponent<MeshRenderer>().material = materialUnico;
 
         objetosInstanciados.Add(nuevoObjeto);
+    }
+
+    private void ActualizarMatrices(float deltaPhi, float deltaTheta){
+        Matrix4x4 matrizVista = camaraOrbital.CalcularMatrizVista(deltaPhi, deltaTheta);
+        foreach(GameObject o in objetosInstanciados){
+            o.GetComponent<MeshRenderer>().material.SetMatrix("_ViewMatrix", matrizVista); 
+        }
     }
 
 }

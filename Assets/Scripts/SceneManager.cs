@@ -8,6 +8,9 @@ public class SceneManager : MonoBehaviour {
     private List<GameObject> objetosInstanciados = new List<GameObject>();
     private GameObject lienzo;
     private CamaraOrbital camaraOrbital;
+    private CamaraPrimeraPersona camaraPrimeraPersona;
+    private enum modoCamara {orbital, primeraPersona};
+    private modoCamara camaraActiva = modoCamara.orbital;
 
     void Start(){
         CrearEscena();
@@ -16,20 +19,52 @@ public class SceneManager : MonoBehaviour {
         }
         CreateLienzo();
         camaraOrbital = new CamaraOrbital(Vector3.zero, 15f);
-        ActualizarMatrices(0, 0);
+        camaraPrimeraPersona = new CamaraPrimeraPersona(Vector3.zero);
+        ActualizarMatrices(camaraOrbital.CalcularMatrizVista(0, 0));
     }
 
     void Update(){
+        if (Input.GetKeyDown(KeyCode.C)){
+            if (camaraActiva == modoCamara.orbital) camaraActiva = modoCamara.primeraPersona;
+            else camaraActiva = modoCamara.orbital;
+        }
+
         float deltaPhi = 0f;
         float deltaTheta = 0f;
+        float inputAvance = 0f;
+        float inputLateral = 0f;
 
-        if (Input.GetKey(KeyCode.RightArrow)) deltaPhi = deltaPhi + 0.01f;
-        if (Input.GetKey(KeyCode.LeftArrow))  deltaPhi = deltaPhi - 0.01f;
+        // Flechas para rotar (lo usan ambas cámaras)
+        if (Input.GetKey(KeyCode.RightArrow)) deltaPhi += 0.01f;
+        if (Input.GetKey(KeyCode.LeftArrow))  deltaPhi -= 0.01f;
+        if (Input.GetKey(KeyCode.UpArrow))    deltaTheta -= 0.01f; 
+        if (Input.GetKey(KeyCode.DownArrow))  deltaTheta += 0.01f;
 
-        if (Input.GetKey(KeyCode.UpArrow))    deltaTheta = deltaTheta - 0.01f; 
-        if (Input.GetKey(KeyCode.DownArrow))  deltaTheta = deltaTheta + 0.01f;
+        // WASD para moverse (solo lo usa la primera persona)
+        if (Input.GetKey(KeyCode.W)) inputAvance += 0.01f;
+        if (Input.GetKey(KeyCode.S)) inputAvance -= 0.01f;
+        if (Input.GetKey(KeyCode.D)) inputLateral += 0.01f;
+        if (Input.GetKey(KeyCode.A)) inputLateral -= 0.01f;
 
-        if (deltaPhi != 0 || deltaTheta != 0) ActualizarMatrices(deltaPhi, deltaTheta);
+        Matrix4x4 nuevaMatrizVista = Matrix4x4.identity;
+        bool huboMovimiento = false;
+
+        if (camaraActiva == modoCamara.orbital){
+            // A la orbital solo le pasamos la rotación
+            if (deltaPhi != 0 || deltaTheta != 0){
+                nuevaMatrizVista = camaraOrbital.CalcularMatrizVista(deltaPhi, deltaTheta);
+                huboMovimiento = true;
+            }
+        }
+        else if (camaraActiva == modoCamara.primeraPersona){
+            // A la primer persona le pasamos rotación y movimiento
+            if (deltaPhi != 0 || deltaTheta != 0 || inputAvance != 0 || inputLateral != 0){
+                nuevaMatrizVista = camaraPrimeraPersona.CalcularMatrizVista(deltaPhi, deltaTheta, inputAvance, inputLateral);
+                huboMovimiento = true;
+            }
+        }
+
+        if (huboMovimiento) ActualizarMatrices(nuevaMatrizVista);
     }
     
     private void CrearEscena(){
@@ -185,8 +220,7 @@ public class SceneManager : MonoBehaviour {
         objetosInstanciados.Add(nuevoObjeto);
     }
 
-    private void ActualizarMatrices(float deltaPhi, float deltaTheta){
-        Matrix4x4 matrizVista = camaraOrbital.CalcularMatrizVista(deltaPhi, deltaTheta);
+    private void ActualizarMatrices(Matrix4x4 matrizVista){
         foreach(GameObject o in objetosInstanciados){
             o.GetComponent<MeshRenderer>().material.SetMatrix("_ViewMatrix", matrizVista); 
         }

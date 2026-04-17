@@ -58,8 +58,8 @@ public class SceneManager : MonoBehaviour {
         }
         else if (camaraActiva == modoCamara.primeraPersona){
             // A la primer persona le pasamos rotación y movimiento
-            if (deltaPhi != 0 || deltaTheta != 0 || inputAvance != 0 || inputLateral != 0){
-                nuevaMatrizVista = camaraPrimeraPersona.CalcularMatrizVista(deltaPhi, deltaTheta, inputAvance, inputLateral);
+            if (deltaPhi != 0 || inputAvance != 0 || inputLateral != 0){
+                nuevaMatrizVista = camaraPrimeraPersona.CalcularMatrizVista(deltaPhi, inputAvance, inputLateral);
                 huboMovimiento = true;
             }
         }

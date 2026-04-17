@@ -53,8 +53,8 @@ public static class MVP {
         Vector3 forward = (target - position).normalized;
         up = up.normalized;
         /* Regla de la mano derecha */
-        Vector3 right = Vector3.Cross(forward, up);
-        up = Vector3.Cross(right, forward);
+        Vector3 right = Vector3.Cross(up, forward);
+        up = Vector3.Cross(forward, right);
 
         Matrix4x4 traslacionInversa = new Matrix4x4(
             new Vector4(1f, 0f, 0f, -position.x),

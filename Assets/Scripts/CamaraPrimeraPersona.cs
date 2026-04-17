@@ -2,37 +2,30 @@ using UnityEngine;
 
 public class CamaraPrimeraPersona{
     public Vector3 posicion;
-    // Ángulos en radianes
-    private float theta; 
-    private float phi;   
+    private float anguloGiro;   
 
     public CamaraPrimeraPersona(Vector3 posicionInicial){
         this.posicion = posicionInicial;
-        this.theta = Mathf.PI / 2f; 
-        this.phi = 0f; 
+        this.anguloGiro = 0f; 
     }
 
-    public Matrix4x4 CalcularMatrizVista(float deltaPhi, float deltaTheta, float inputAvance, float inputLateral){
-        phi += deltaPhi;
-        theta += deltaTheta;
-        // Clampeamos theta para limitar el rango de movimiento vertical
-        theta = Mathf.Clamp(theta, 0.05f, Mathf.PI - 0.05f);
+    public Matrix4x4 CalcularMatrizVista(float deltaGiro, float inputAvance, float inputLateral){
+        anguloGiro += deltaGiro;
 
-        Vector3 direccionMirada = new Vector3(
-            Mathf.Sin(theta) * Mathf.Cos(phi),
-            Mathf.Cos(theta),
-            Mathf.Sin(theta) * Mathf.Sin(phi)
+        Vector3 direccionCaminar = new Vector3(
+            Mathf.Sin(anguloGiro),
+            0f,
+            Mathf.Cos(anguloGiro)
         ).normalized;
 
-        Vector3 direccionCaminar = new Vector3(direccionMirada.x, 0f, direccionMirada.z).normalized;
-
-        Vector3 derecha = Vector3.Cross(direccionMirada, Vector3.up).normalized;
+        // Producto cruz para sacar el vector lateral
+        Vector3 derecha = Vector3.Cross(Vector3.up, direccionCaminar).normalized;
 
         posicion += direccionCaminar * inputAvance;
         posicion += derecha * inputLateral;
-        posicion.y = 1.5f;
+        posicion.y = 1.7f;
 
-        Vector3 objetivo = posicion + direccionMirada;
+        Vector3 objetivo = posicion + direccionCaminar;
 
         return MVP.CreateViewMatrix(posicion, objetivo, Vector3.up);
     }

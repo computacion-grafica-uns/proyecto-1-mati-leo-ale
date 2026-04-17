@@ -231,21 +231,21 @@ public class SceneManager : MonoBehaviour {
 
     objetosACargar.Add(new DatosObjeto
     {
-        nombreArchivo = "toilet2",
+        nombreArchivo = "inodoro",
         nombreGameObject = "inodoro",
-        
-        posicion = new Vector3(1.736f, 0.388f, 2.09f),
+    
+        posicion = new Vector3(1.736f, 0.388f, 2.00f),
         rotacion = new Vector3(0, 90f, 0),
         escala = new Vector3(0.64f, 0.5f, 0.55f),
-        colorPrincipal = Color.black
+        colorPrincipal = Color.white
     });
 
     objetosACargar.Add(new DatosObjeto
     {
         nombreArchivo = "bidet",
         nombreGameObject = "Bidet_Realista",         
-        posicion = new Vector3(2.5f, 0.2f, 2.2f),
-        rotacion = new Vector3(0, 0, 0),
+        posicion = new Vector3(2.5f, 0.2f, 2.1f),
+        rotacion = new Vector3(0, 180, 0),
         escala = new Vector3(0.01f, 0.0075f, 0.01f),
         colorPrincipal = Color.white
     });
@@ -254,11 +254,61 @@ public class SceneManager : MonoBehaviour {
     {
         nombreArchivo = "shower1",
         nombreGameObject = "ducha",
-        posicion = new Vector3(2.5f, 1f, 1.2f),
-        rotacion = new Vector3(0, 0, 0),
+        posicion = new Vector3(3.165f, 1f, 0.618f),
+        rotacion = new Vector3(0, 180, 0),
         escala = new Vector3(1f, 1f, 1f),
         colorPrincipal = Color.white
     });
+
+    objetosACargar.Add(new DatosObjeto
+    {
+        nombreArchivo = "sink1",
+        nombreGameObject = "lavamanos",
+        posicion = new Vector3(1.77f, 0.557f, 0.434f),
+        rotacion = new Vector3(0, -90, 0),
+        escala = new Vector3(0.75f, 0.85f, 0.82f),
+        colorPrincipal = Color.white
+    });
+
+    objetosACargar.Add(new DatosObjeto
+    {
+        nombreArchivo = "mirror",
+        nombreGameObject = "espejo",
+        posicion = new Vector3(1.77f,1.686f, 0.117f),
+        rotacion = new Vector3(0, -90, 0),
+        escala = new Vector3(0.75f, 0.85f, 0.82f),
+        colorPrincipal = Color.white
+    });
+
+    objetosACargar.Add(new DatosObjeto
+    {
+        nombreArchivo = "mueble_baño",
+        nombreGameObject = "mueblebanio",
+        posicion = new Vector3(3.345f,0.861f, 2.143f),
+        rotacion = new Vector3(0, -180, 0),
+        escala = new Vector3(0.01125f, 0.01125f, 0.01125f),
+        colorPrincipal = Color.white
+    });
+
+    objetosACargar.Add(new DatosObjeto
+    {
+        nombreArchivo = "mesadawsink",
+        nombreGameObject = "bacha",
+        posicion = new Vector3(2.786f, 0.447f, 3.409f),
+        rotacion = new Vector3(0, -180, 0),
+        escala = new Vector3(0.71f, 0.71f, 0.71f),
+        colorPrincipal = Color.white
+    });
+
+    objetosACargar.Add(new DatosObjeto
+        {
+            nombreArchivo = "horno",
+            nombreGameObject = "horno",
+            posicion = new Vector3(1.621f, 0.378f, 2.915f),
+            rotacion = new Vector3(0, -90, 0),
+            escala = new Vector3(0.71f, 0.71f, 0.71f),
+        colorPrincipal = Color.white
+        });
     }
 
     private void CreateLienzo(){

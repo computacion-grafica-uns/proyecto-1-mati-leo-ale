@@ -242,19 +242,20 @@ public class SceneManager : MonoBehaviour {
         {
             nombreArchivo = "littleOne",
             nombreGameObject = "muebletv",
-            posicion = new Vector3(3.45f, 0.19f, 6.16f), // Apoya en el suelo (Y = 0.3)
+            posicion = new Vector3(3.45f, 0.19f, 8.6f), // Apoya en el suelo (Y = 0.3)
             rotacion = new Vector3(0, 0, 0),
-            escala = new Vector3(0.55f, 0.6f, 2.8f), // Robusto y proporcional
-                                                     // Marrón oscuro (Estilo Nogal/Chocolate)
-            colorPrincipal = new Color(101f / 255f, 67f / 255f, 33f / 255f)
+            escala = new Vector3(0.55f, 0.6f, 2.8f), 
+            colorPrincipal = new Color(101f / 255f, 67f / 255f, 33f / 255f),
+            paletaMateriales = new Dictionary<string, Color>() {
+                {"littleOneTexture", new Color(80f / 255f, 50f / 255f, 20f / 255f)}
+            }
         });
 
         objetosACargar.Add(new DatosObjeto
         {
             nombreArchivo = "pared_lisa",
             nombreGameObject = "tv",
-            // Techo mueble (0.6) + Mitad altura TV (0.85 / 2 = 0.425) = 1.025
-            posicion = new Vector3(3.55f, 1f, 6.16f),
+            posicion = new Vector3(3.5f, 1f, 8.6f),
             rotacion = new Vector3(0, 90f, 0),
             escala = new Vector3(1.5f, 0.85f, 0.05f),
             colorPrincipal = Color.black
@@ -268,8 +269,12 @@ public class SceneManager : MonoBehaviour {
             posicion = new Vector3(1.736f, 0.388f, 2.00f),
             rotacion = new Vector3(0, 90f, 0),
             escala = new Vector3(0.64f, 0.5f, 0.55f),
-            colorPrincipal = Color.white
-        });
+            colorPrincipal = Color.white,
+            paletaMateriales = new Dictionary<string, Color>() {
+                {"toilet", Color.white},
+                {"toilet2handle", new Color(140f/255f, 140f/255f, 140f/255f)}
+            }
+});
 
         objetosACargar.Add(new DatosObjeto
         {
@@ -278,7 +283,12 @@ public class SceneManager : MonoBehaviour {
             posicion = new Vector3(2.5f, 0.2f, 2.1f),
             rotacion = new Vector3(0, 180, 0),
             escala = new Vector3(0.01f, 0.0075f, 0.01f),
-            colorPrincipal = Color.white
+            colorPrincipal = Color.white,
+            paletaMateriales = new Dictionary<string, Color>() {
+                {"Rectangle02_1",new Color(1,1,1)},
+                {"Cylinder02_2", new Color(140f/255f, 140f/255f, 140f/255f)}
+                
+            }
         });
 
         objetosACargar.Add(new DatosObjeto
@@ -288,9 +298,9 @@ public class SceneManager : MonoBehaviour {
             posicion = new Vector3(3.165f, 1.1f, 0.618f),
             rotacion = new Vector3(0, 180, 0),
             escala = new Vector3(1f, 1f, 1f),
-            colorPrincipal = Color.white,
+            colorPrincipal = new Color(115f/255f, 115f/255f, 115f/255f), //gris clarito
             paletaMateriales = new Dictionary<string, Color>() {
-                {"showerlighter", Color.white},
+                {"showerlighter", new Color(115f/255f, 115f/255f, 115f/255f)},
                 {"showerdarker", new Color(0.8f, 0.8f, 0.8f)},
                 {"showerBlack", Color.black},
                 {"showerBlue", new Color(47f/255f, 171f/255f, 255f/255f)},
@@ -320,7 +330,11 @@ public class SceneManager : MonoBehaviour {
             posicion = new Vector3(1.77f,1.686f, 0.117f),
             rotacion = new Vector3(0, -90, 0),
             escala = new Vector3(0.75f, 0.85f, 0.82f),
-            colorPrincipal = Color.white
+            colorPrincipal = Color.white,
+            paletaMateriales = new Dictionary<string, Color>() {
+                { "mirrorBlue", Color.blue},
+                { "mirrorlighter", new Color(0.9f, 0.9f, 0.9f) }
+            }
         });
 
         objetosACargar.Add(new DatosObjeto
@@ -330,7 +344,12 @@ public class SceneManager : MonoBehaviour {
             posicion = new Vector3(3.345f,0.861f, 2.143f),
             rotacion = new Vector3(0, -180, 0),
             escala = new Vector3(0.01125f, 0.01125f, 0.01125f),
-            colorPrincipal = Color.white
+            colorPrincipal = Color.white,
+            paletaMateriales = new Dictionary<string, Color>() {
+                { "Cylinder60_1", new Color(1,1,1) },
+                { "Cylinder57_6", Color.black },
+                { "Cylinder67_7", Color.yellow }
+            }
         });
 
         objetosACargar.Add(new DatosObjeto
@@ -340,7 +359,10 @@ public class SceneManager : MonoBehaviour {
             posicion = new Vector3(2.786f, 0.447f, 3.409f),
             rotacion = new Vector3(0, -180, 0),
             escala = new Vector3(0.71f, 0.71f, 0.71f),
-            colorPrincipal = Color.white
+            colorPrincipal = Color.white,
+            paletaMateriales = new Dictionary<string, Color>() {
+                { "KitchenCabinetRoundedTexture", new Color(50/255f, 50/255f, 50/255f) }
+            }
         });
 
         objetosACargar.Add(new DatosObjeto
@@ -351,6 +373,37 @@ public class SceneManager : MonoBehaviour {
             rotacion = new Vector3(0, -90, 0),
             escala = new Vector3(0.71f, 0.71f, 0.71f),
             colorPrincipal = Color.white
+        });
+
+        objetosACargar.Add(new DatosObjeto
+        {
+            nombreArchivo = "Fridge",
+            nombreGameObject = "heladera",
+            posicion = new Vector3(3.215f, 0.958f, 4.719f),
+            rotacion = new Vector3(0, 180, 0),
+            escala = new Vector3(1f, 1f, 1f),
+            colorPrincipal = Color.white
+        });
+
+
+        objetosACargar.Add(new DatosObjeto
+        {
+            nombreArchivo = "90degrees",
+            nombreGameObject = "gabinete_esquina",
+            posicion = new Vector3(2.979f, 1.968f, 3.223f),
+            rotacion = new Vector3(0, 180, 0),
+            escala = new Vector3(0.6f, 0.6f, 0.6f),
+            colorPrincipal = Color.white
+        });
+
+        objetosACargar.Add(new DatosObjeto
+        {
+            nombreArchivo = "table",
+            nombreGameObject = "mesa",
+            posicion = new Vector3(1.1f, 0.297f, 6.15f),
+            rotacion = new Vector3(0, 0, 0),
+            escala = new Vector3(0.6f, 0.6f, 0.6f),
+            colorPrincipal = new Color(48/255f, 48/255f, 48/255f)
         });
 
         GenerarPisoFlotante();

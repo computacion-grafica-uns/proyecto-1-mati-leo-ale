@@ -6,6 +6,10 @@ using UnityEngine;
 public class SceneManager : MonoBehaviour {
     private List<DatosObjeto> objetosACargar = new List<DatosObjeto>();    
     private List<GameObject> objetosInstanciados = new List<GameObject>();
+    private List<GameObject> paredes = new List<GameObject>();
+    private GameObject techo;
+    private bool paredesVisibles = true;
+    private bool techoVisible = true;
     private GameObject lienzo;
     private CamaraOrbital camaraOrbital;
     private CamaraPrimeraPersona camaraPrimeraPersona;
@@ -84,6 +88,24 @@ public class SceneManager : MonoBehaviour {
             float aspect = (float)Screen.width / (float)Screen.height;
             Matrix4x4 nuevaMatrizProyeccion = MVP.CreateProjectionMatrix(60f, aspect, 0.1f, 1000f);
             ActualizarMatrices(nuevaMatrizVista, nuevaMatrizProyeccion);
+        }
+
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            paredesVisibles = !paredesVisibles;
+            foreach (GameObject pared in paredes)
+            {
+                pared.SetActive(paredesVisibles);
+            }
+        }
+
+        if (Input.GetKeyDown(KeyCode.T))
+        {
+            techoVisible = !techoVisible;
+            if (techo != null)
+            {
+                techo.SetActive(techoVisible);
+            }
         }
     }
     
@@ -362,6 +384,15 @@ public class SceneManager : MonoBehaviour {
         nuevoObjeto.GetComponent<MeshRenderer>().material = materialUnico;
 
         objetosInstanciados.Add(nuevoObjeto);
+
+        if (datos.nombreGameObject.StartsWith("Pared_"))
+        {
+            paredes.Add(nuevoObjeto);
+        }
+        else if (datos.nombreGameObject == "techo")
+        {
+            techo = nuevoObjeto;
+        }
     }
 
     private void ActualizarMatrices(Matrix4x4 matrizVista, Matrix4x4 matrizProyeccion){

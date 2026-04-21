@@ -240,17 +240,6 @@ public class SceneManager : MonoBehaviour {
 
         objetosACargar.Add(new DatosObjeto
         {
-            nombreArchivo = "pared_lisa",
-            nombreGameObject = "piso",
-            posicion = new Vector3(1.52f, -0.05f, 4.88f),
-            rotacion = new Vector3(0, 0, 0),
-            escala = new Vector3(4.26f, 0.1f, 50f),
-            // Corregido: Dividido por 255f para que no se vea blanco
-            colorPrincipal = new Color(193f / 255f, 154f / 255f, 107f / 255f)
-        });
-
-        objetosACargar.Add(new DatosObjeto
-        {
             nombreArchivo = "littleOne",
             nombreGameObject = "muebletv",
             posicion = new Vector3(3.45f, 0.19f, 6.16f), // Apoya en el suelo (Y = 0.3)
@@ -343,14 +332,16 @@ public class SceneManager : MonoBehaviour {
         });
 
         objetosACargar.Add(new DatosObjeto
-            {
-                nombreArchivo = "horno",
-                nombreGameObject = "horno",
-                posicion = new Vector3(1.621f, 0.378f, 2.915f),
-                rotacion = new Vector3(0, -90, 0),
-                escala = new Vector3(0.71f, 0.71f, 0.71f),
+        {
+            nombreArchivo = "horno",
+            nombreGameObject = "horno",
+            posicion = new Vector3(1.621f, 0.378f, 2.915f),
+            rotacion = new Vector3(0, -90, 0),
+            escala = new Vector3(0.71f, 0.71f, 0.71f),
             colorPrincipal = Color.white
-            });
+        });
+
+        GenerarPisoFlotante();
     }
 
     private void CreateLienzo(){
@@ -402,4 +393,59 @@ public class SceneManager : MonoBehaviour {
         }
     }
 
+    private void GenerarPisoFlotante(){
+        Color maderaClara = new Color(193f / 255f, 154f / 255f, 107f / 255f);
+        Color maderaOscura = new Color(140f / 255f, 100f / 255f, 60f / 255f);
+
+        float anchoTablon = 0.2f;
+        float largoTablon = 1.2f;
+        float grosorTablon = 0.05f;
+
+        // Límites del monoambiente
+        float limiteMinX = -0.4f; // Pared izquierda
+        float limiteMaxX = 3.8f;  // Pared derecha
+        float limiteMinZ = 0.0f;  // Pared de la puerta (inicio)
+        float limiteMaxZ = 9.8f;  // Pared de la ventana (fondo)
+
+        float actualX = limiteMinX;
+        int fila = 0;
+
+        while (actualX < limiteMaxX){
+            float actualZ = limiteMinZ;
+
+            bool esFilaImpar = (fila % 2 != 0);
+            float largoPrimerTablon = esFilaImpar ? (largoTablon / 2f) : largoTablon;
+
+            int columna = 0;
+
+            while (actualZ < limiteMaxZ){
+                float largoTablonActual = (columna == 0) ? largoPrimerTablon : largoTablon;
+
+                if (actualZ + largoTablonActual > limiteMaxZ){
+                    largoTablonActual = limiteMaxZ - actualZ;
+                }
+
+                float centroZ = actualZ + (largoTablonActual / 2f);
+
+                float variacion = UnityEngine.Random.Range(0f, 1f);
+                Color colorUnico = Color.Lerp(maderaClara, maderaOscura, variacion);
+
+                objetosACargar.Add(new DatosObjeto
+                {
+                    nombreArchivo = "cubo", 
+                    nombreGameObject = $"Tablon_{fila}_{columna}",
+                    posicion = new Vector3(actualX, -0.05f, centroZ),
+                    rotacion = Vector3.zero,
+                    escala = new Vector3(anchoTablon, grosorTablon, largoTablonActual),
+                    colorPrincipal = colorUnico
+                });
+
+                actualZ += largoTablonActual;
+                columna++;
+            }
+
+            actualX += anchoTablon;
+            fila++;
+        }
+    }
 }

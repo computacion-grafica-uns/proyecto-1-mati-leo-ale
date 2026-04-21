@@ -8,4 +8,5 @@ public class DatosObjeto {
     public Vector3 rotacion;
     public Vector3 escala;
     public Color colorPrincipal;
+    public Dictionary<string, Color> paletaMateriales;
 }

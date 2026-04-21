@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Globalization;
 using System.IO;
 using UnityEngine;
@@ -9,8 +8,9 @@ public class CargadorObjetos
 {
     public Vector3[] vertices;
     public int[] triangles;
+    public Color[] colors;
 
-    public void ProcesarArchivo(string fileName)
+    public void ProcesarArchivo(string fileName, Dictionary<string, Color> paleta, Color colorPorDefecto)
     {
         // Start is called before the first frame update
         string path = "Assets/Modelos3D/" + fileName + ".obj";
@@ -28,14 +28,28 @@ public class CargadorObjetos
         List<Vector3> verticesLista = new List<Vector3>();
         List<int> carasLista = new List<int>();
 
+        // Lista paralela a los vértices para guardar el color de cada uno
+        List<Color> coloresLista = new List<Color>();
+
+        string materialActual = ""; // Guarda el estado del "pincel"
+
         string[] lines = fileData.Split('\n');
         
         for (int i = 0; i < lines.Length; i++)
         {
-            if (lines[i].StartsWith("v "))
+            // Limpiamos espacios extras y saltos de línea invisibles (\r)
+            string lineaLimpia = lines[i].Trim();
+
+            if (lineaLimpia.StartsWith("usemtl "))
             {
-                // 1. Limpiamos espacios extras y saltos de línea invisibles (\r)
-                string lineaLimpia = lines[i].Trim();
+                // Cambiamos el pincel al nuevo material
+                string[] partes = lineaLimpia.Split(new[] { ' ' }, System.StringSplitOptions.RemoveEmptyEntries);
+                if (partes.Length > 1) {
+                    materialActual = partes[1];
+                }
+            }
+            else if (lines[i].StartsWith("v "))
+            {
 
                 // 2. Spliteamos eliminando entradas vacías
                 string[] partes = lineaLimpia.Split(new[] { ' ' }, System.StringSplitOptions.RemoveEmptyEntries);
@@ -46,40 +60,48 @@ public class CargadorObjetos
                 float z = float.Parse(partes[3], CultureInfo.InvariantCulture);
 
                 verticesLista.Add(new Vector3(x, y, z));
+
+                // Inicializamos el vértice con el color por defecto
+                coloresLista.Add(colorPorDefecto);
             }
             else if (lines[i].StartsWith("f "))
             {
-                string[] partes = lines[i].Split(new[] { ' ' }, System.StringSplitOptions.RemoveEmptyEntries);
+                string[] partes = lineaLimpia.Split(new[] { ' ' }, System.StringSplitOptions.RemoveEmptyEntries);
 
                 // Cantidad de índices en esta cara (sin contar la "f")
                 int numVerticesEnCara = partes.Length - 1;
 
+                // Averiguamos qué color tiene el pincel actual revisando el diccionario
+                Color colorDeEstaCara = colorPorDefecto;
+                if (paleta != null && paleta.ContainsKey(materialActual)) {
+                    colorDeEstaCara = paleta[materialActual];
+                }
+
+                // Función local para no repetir código: extrae el índice y pinta el vértice
+                void ProcesarYColorearVertice(string datoVertice) {
+                    int indice = int.Parse(datoVertice.Split('/')[0]) - 1;
+                    carasLista.Add(indice);
+                    // Sobrescribimos el color de este vértice
+                    coloresLista[indice] = colorDeEstaCara; 
+                }
+
                 if (numVerticesEnCara == 3)
                 {
-                    // CASO TRIÁNGULO: (Indices 1, 2, 3)
-                    for (int j = 1; j <= 3; j++)
-                    {
-                        int indice = int.Parse(partes[j].Split('/')[0]) - 1;
-                        carasLista.Add(indice);
-                    }
+                    ProcesarYColorearVertice(partes[1]);
+                    ProcesarYColorearVertice(partes[2]);
+                    ProcesarYColorearVertice(partes[3]);
                 }
                 else if (numVerticesEnCara == 4)
                 {
-                    // CASO QUAD: Lo dividimos en dos triángulos (1-2-3 y 1-3-4)
-                    int v1 = int.Parse(partes[1].Split('/')[0]) - 1;
-                    int v2 = int.Parse(partes[2].Split('/')[0]) - 1;
-                    int v3 = int.Parse(partes[3].Split('/')[0]) - 1;
-                    int v4 = int.Parse(partes[4].Split('/')[0]) - 1;
+                    // Triángulo 1 del Quad
+                    ProcesarYColorearVertice(partes[1]);
+                    ProcesarYColorearVertice(partes[2]);
+                    ProcesarYColorearVertice(partes[3]);
 
-                    // Triángulo 1
-                    carasLista.Add(v1);
-                    carasLista.Add(v2);
-                    carasLista.Add(v3);
-
-                    // Triángulo 2
-                    carasLista.Add(v1);
-                    carasLista.Add(v3);
-                    carasLista.Add(v4);
+                    // Triángulo 2 del Quad
+                    ProcesarYColorearVertice(partes[1]);
+                    ProcesarYColorearVertice(partes[3]);
+                    ProcesarYColorearVertice(partes[4]);
                 }
             }
         }
@@ -88,6 +110,7 @@ public class CargadorObjetos
         
         vertices = verticesLista.ToArray();
         triangles = carasLista.ToArray();
+        colors = coloresLista.ToArray();
     }
 
     private void CentrarObjeto(List<Vector3> verticesLista)

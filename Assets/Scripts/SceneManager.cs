@@ -285,10 +285,17 @@ public class SceneManager : MonoBehaviour {
         {
             nombreArchivo = "shower1",
             nombreGameObject = "ducha",
-            posicion = new Vector3(3.165f, 1f, 0.618f),
+            posicion = new Vector3(3.165f, 1.1f, 0.618f),
             rotacion = new Vector3(0, 180, 0),
             escala = new Vector3(1f, 1f, 1f),
-            colorPrincipal = Color.white
+            colorPrincipal = Color.white,
+            paletaMateriales = new Dictionary<string, Color>() {
+                {"showerlighter", Color.white},
+                {"showerdarker", new Color(0.8f, 0.8f, 0.8f)},
+                {"showerBlack", Color.black},
+                {"showerBlue", new Color(47f/255f, 171f/255f, 255f/255f)},
+                {"showerdarker2", new Color(0.92f, 0.92f, 0.92f)}
+            }
         });
 
         objetosACargar.Add(new DatosObjeto
@@ -298,7 +305,12 @@ public class SceneManager : MonoBehaviour {
             posicion = new Vector3(1.77f, 0.557f, 0.434f),
             rotacion = new Vector3(0, -90, 0),
             escala = new Vector3(0.75f, 0.85f, 0.82f),
-            colorPrincipal = Color.white
+            colorPrincipal = Color.white,
+            paletaMateriales = new Dictionary<string, Color>() {
+                { "sinkdarker", new Color(0.8f, 0.8f, 0.8f) }, 
+                { "sinklighter", Color.white },                
+                { "sinkblack", Color.black }                   
+            }
         });
 
         objetosACargar.Add(new DatosObjeto
@@ -353,20 +365,20 @@ public class SceneManager : MonoBehaviour {
 
     private void InstanciarYConfigurarObjeto(DatosObjeto datos){
         CargadorObjetos parser = new CargadorObjetos();
-        parser.ProcesarArchivo(datos.nombreArchivo);
+        parser.ProcesarArchivo(datos.nombreArchivo, datos.paletaMateriales, datos.colorPrincipal);
         
         GameObject nuevoObjeto = new GameObject(datos.nombreGameObject);
         nuevoObjeto.AddComponent<MeshFilter>().mesh = new Mesh();
         nuevoObjeto.AddComponent<MeshRenderer>();
         
-        Color[] coloresDeVertices = new Color[parser.vertices.Length];
+        /*Color[] coloresDeVertices = new Color[parser.vertices.Length];
         for (int i = 0; i < coloresDeVertices.Length; i++){
             coloresDeVertices[i] = datos.colorPrincipal; 
-        }
+        }*/
 
         nuevoObjeto.GetComponent<MeshFilter>().mesh.vertices = parser.vertices;
         nuevoObjeto.GetComponent<MeshFilter>().mesh.triangles = parser.triangles;
-        nuevoObjeto.GetComponent<MeshFilter>().mesh.colors = coloresDeVertices;
+        nuevoObjeto.GetComponent<MeshFilter>().mesh.colors = parser.colors;
         nuevoObjeto.GetComponent<MeshFilter>().mesh.bounds = new Bounds(Vector3.zero, Vector3.one * 10000f);
 
         Material materialUnico = new Material(Shader.Find("MyShader"));

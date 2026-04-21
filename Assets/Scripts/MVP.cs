@@ -1,4 +1,5 @@
 using UnityEngine;
+using System;
 
 public static class MVP {
     public static Matrix4x4 CreateModelMatrix(Vector3 newPosition, Vector3 newRotation, Vector3 newScale){
@@ -53,8 +54,8 @@ public static class MVP {
         Vector3 forward = (target - position).normalized;
         up = up.normalized;
         /* Regla de la mano derecha */
-        Vector3 right = Vector3.Cross(up, forward);
-        up = Vector3.Cross(forward, right);
+        Vector3 right = Vector3.Cross(up, forward).normalized;
+        up = Vector3.Cross(forward, right).normalized;
 
         Matrix4x4 traslacionInversa = new Matrix4x4(
             new Vector4(1f, 0f, 0f, -position.x),
@@ -73,5 +74,33 @@ public static class MVP {
         rotacionInversa = rotacionInversa.transpose;
         
         return rotacionInversa * traslacionInversa;
+    }
+
+    public static Matrix4x4 CreateProjectionMatrix(float fovGrados, float aspect, float near, float far){
+        /*   
+        * Tuvimos que modificar la matriz clásica de los libros para que 
+        * funcione bien con el hardware actual y no se rompa la escena:
+        * 1. Eje Y Invertido (-1): Unity usa el origen de la pantalla arriba 
+        * a la izquierda (no abajo). Le agregamos el -1 al cálculo de Y para 
+        * no ver el monoambiente patas arriba.
+        * 2. Reversed-Z: La fórmula clásica calcula la profundidad de -1 a 1. 
+        * DirectX la calcula al revés (de 1 a 0). Cambiamos la ecuación de la 
+        * 3ra fila para adaptar el rango y evitar que las paredes del fondo 
+        * desaparezcan de la nada (Z-Clipping).
+        */
+
+        // Convertimos el FOV a radianes
+        float fovRadianes = fovGrados * (float)(Math.PI / 180.0);
+
+        float tanHalfFov = (float)Math.Tan(fovRadianes / 2f);
+
+        Matrix4x4 projectionMatrix = new Matrix4x4(
+            new Vector4(1f / (aspect * tanHalfFov), 0f, 0f, 0f),
+            new Vector4(0f, -1f / tanHalfFov, 0f, 0f),
+            new Vector4(0f, 0f, near / (far - near), (near * far) / (far - near)),
+            new Vector4(0f, 0f, -1f, 0f)
+        );
+
+        return projectionMatrix.transpose;
     }
 }

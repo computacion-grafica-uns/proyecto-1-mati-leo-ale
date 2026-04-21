@@ -18,15 +18,26 @@ public class SceneManager : MonoBehaviour {
             InstanciarYConfigurarObjeto(datos);
         }
         CreateLienzo();
-        camaraOrbital = new CamaraOrbital(Vector3.zero, 15f);
+        camaraOrbital = new CamaraOrbital(new Vector3(1.6f, 0f, 4.9f), 15f);
         camaraPrimeraPersona = new CamaraPrimeraPersona(Vector3.zero);
-        ActualizarMatrices(camaraOrbital.CalcularMatrizVista(0, 0));
+        float aspect = (float)Screen.width / (float)Screen.height;
+        Matrix4x4 matrizVistaInicial = camaraOrbital.CalcularMatrizVista(0, 0);
+        Matrix4x4 matrizProyeccionInicial = MVP.CreateProjectionMatrix(60f, aspect, 0.1f, 1000f);
+        ActualizarMatrices(matrizVistaInicial, matrizProyeccionInicial);
     }
 
     void Update(){
         if (Input.GetKeyDown(KeyCode.C)){
-            if (camaraActiva == modoCamara.orbital) camaraActiva = modoCamara.primeraPersona;
-            else camaraActiva = modoCamara.orbital;
+            if (camaraActiva == modoCamara.orbital) {
+                camaraActiva = modoCamara.primeraPersona;
+                Cursor.lockState = CursorLockMode.Locked;
+                Cursor.visible = false;
+            }
+            else {
+                camaraActiva = modoCamara.orbital;
+                Cursor.lockState = CursorLockMode.None;
+                Cursor.visible = true;
+            }
         }
 
         float deltaPhi = 0f;
@@ -34,37 +45,46 @@ public class SceneManager : MonoBehaviour {
         float inputAvance = 0f;
         float inputLateral = 0f;
 
-        // Flechas para rotar (lo usan ambas cámaras)
+        // Flechas para rotar (solo lo usa la cámara Orbital)
         if (Input.GetKey(KeyCode.RightArrow)) deltaPhi += 0.01f;
         if (Input.GetKey(KeyCode.LeftArrow))  deltaPhi -= 0.01f;
         if (Input.GetKey(KeyCode.UpArrow))    deltaTheta -= 0.01f; 
         if (Input.GetKey(KeyCode.DownArrow))  deltaTheta += 0.01f;
 
-        // WASD para moverse (solo lo usa la primera persona)
+        // WASD para moverse (solo lo usa la cámara Primera Persona)
         if (Input.GetKey(KeyCode.W)) inputAvance += 0.01f;
         if (Input.GetKey(KeyCode.S)) inputAvance -= 0.01f;
         if (Input.GetKey(KeyCode.D)) inputLateral += 0.01f;
         if (Input.GetKey(KeyCode.A)) inputLateral -= 0.01f;
 
+        // Mouse para mirar (solo lo usa la cámara Primera Persona)
+        float sensibilidadMouse = 0.02f;
+        float mouseX = Input.GetAxis("Mouse X") * sensibilidadMouse;
+        float mouseY = Input.GetAxis("Mouse Y") * sensibilidadMouse;
+
         Matrix4x4 nuevaMatrizVista = Matrix4x4.identity;
         bool huboMovimiento = false;
 
         if (camaraActiva == modoCamara.orbital){
-            // A la orbital solo le pasamos la rotación
+            // A la orbital le pasamos las flechas del teclado
             if (deltaPhi != 0 || deltaTheta != 0){
                 nuevaMatrizVista = camaraOrbital.CalcularMatrizVista(deltaPhi, deltaTheta);
                 huboMovimiento = true;
             }
         }
         else if (camaraActiva == modoCamara.primeraPersona){
-            // A la primer persona le pasamos rotación y movimiento
-            if (deltaPhi != 0 || inputAvance != 0 || inputLateral != 0){
-                nuevaMatrizVista = camaraPrimeraPersona.CalcularMatrizVista(deltaPhi, inputAvance, inputLateral);
+            // A la primera persona le pasamos el Mouse (rotación) y WASD (movimiento)
+            if (mouseX != 0 || mouseY != 0 || inputAvance != 0 || inputLateral != 0){
+                nuevaMatrizVista = camaraPrimeraPersona.CalcularMatrizVista(mouseX, mouseY, inputAvance, inputLateral);
                 huboMovimiento = true;
             }
         }
 
-        if (huboMovimiento) ActualizarMatrices(nuevaMatrizVista);
+        if (huboMovimiento){
+            float aspect = (float)Screen.width / (float)Screen.height;
+            Matrix4x4 nuevaMatrizProyeccion = MVP.CreateProjectionMatrix(60f, aspect, 0.1f, 1000f);
+            ActualizarMatrices(nuevaMatrizVista, nuevaMatrizProyeccion);
+        }
     }
     
     private void CrearEscena(){
@@ -187,128 +207,128 @@ public class SceneManager : MonoBehaviour {
         });
 
         objetosACargar.Add(new DatosObjeto
-    {
-        nombreArchivo = "pared_lisa",
-        nombreGameObject = "techo",
-        posicion = new Vector3(1.52f, 3f, 4.88f),
-        rotacion = new Vector3(0, 0, 0),
-        escala = new Vector3(4.26f, 0.1f, 50f),
-        colorPrincipal = Color.white
-    });
-
-    objetosACargar.Add(new DatosObjeto
-    {
-        nombreArchivo = "pared_lisa",
-        nombreGameObject = "piso",
-        posicion = new Vector3(1.52f, -0.05f, 4.88f),
-        rotacion = new Vector3(0, 0, 0),
-        escala = new Vector3(4.26f, 0.1f, 50f),
-        // Corregido: Dividido por 255f para que no se vea blanco
-        colorPrincipal = new Color(193f / 255f, 154f / 255f, 107f / 255f)
-    });
-
-    objetosACargar.Add(new DatosObjeto
-    {
-        nombreArchivo = "littleOne",
-        nombreGameObject = "muebletv",
-        posicion = new Vector3(3.45f, 0.19f, 6.16f), // Apoya en el suelo (Y = 0.3)
-        rotacion = new Vector3(0, 0, 0),
-        escala = new Vector3(0.55f, 0.6f, 2.8f), // Robusto y proporcional
-                                                 // MarrÃ³n oscuro (Estilo Nogal/Chocolate)
-        colorPrincipal = new Color(101f / 255f, 67f / 255f, 33f / 255f)
-    });
-
-    objetosACargar.Add(new DatosObjeto
-    {
-        nombreArchivo = "pared_lisa",
-        nombreGameObject = "tv",
-        // Techo mueble (0.6) + Mitad altura TV (0.85 / 2 = 0.425) = 1.025
-        posicion = new Vector3(3.55f, 1f, 6.16f),
-        rotacion = new Vector3(0, 90f, 0),
-        escala = new Vector3(1.5f, 0.85f, 0.05f),
-        colorPrincipal = Color.black
-    });
-
-    objetosACargar.Add(new DatosObjeto
-    {
-        nombreArchivo = "inodoro",
-        nombreGameObject = "inodoro",
-    
-        posicion = new Vector3(1.736f, 0.388f, 2.00f),
-        rotacion = new Vector3(0, 90f, 0),
-        escala = new Vector3(0.64f, 0.5f, 0.55f),
-        colorPrincipal = Color.white
-    });
-
-    objetosACargar.Add(new DatosObjeto
-    {
-        nombreArchivo = "bidet",
-        nombreGameObject = "Bidet_Realista",         
-        posicion = new Vector3(2.5f, 0.2f, 2.1f),
-        rotacion = new Vector3(0, 180, 0),
-        escala = new Vector3(0.01f, 0.0075f, 0.01f),
-        colorPrincipal = Color.white
-    });
-
-    objetosACargar.Add(new DatosObjeto
-    {
-        nombreArchivo = "shower1",
-        nombreGameObject = "ducha",
-        posicion = new Vector3(3.165f, 1f, 0.618f),
-        rotacion = new Vector3(0, 180, 0),
-        escala = new Vector3(1f, 1f, 1f),
-        colorPrincipal = Color.white
-    });
-
-    objetosACargar.Add(new DatosObjeto
-    {
-        nombreArchivo = "sink1",
-        nombreGameObject = "lavamanos",
-        posicion = new Vector3(1.77f, 0.557f, 0.434f),
-        rotacion = new Vector3(0, -90, 0),
-        escala = new Vector3(0.75f, 0.85f, 0.82f),
-        colorPrincipal = Color.white
-    });
-
-    objetosACargar.Add(new DatosObjeto
-    {
-        nombreArchivo = "mirror",
-        nombreGameObject = "espejo",
-        posicion = new Vector3(1.77f,1.686f, 0.117f),
-        rotacion = new Vector3(0, -90, 0),
-        escala = new Vector3(0.75f, 0.85f, 0.82f),
-        colorPrincipal = Color.white
-    });
-
-    objetosACargar.Add(new DatosObjeto
-    {
-        nombreArchivo = "mueble_baño",
-        nombreGameObject = "mueblebanio",
-        posicion = new Vector3(3.345f,0.861f, 2.143f),
-        rotacion = new Vector3(0, -180, 0),
-        escala = new Vector3(0.01125f, 0.01125f, 0.01125f),
-        colorPrincipal = Color.white
-    });
-
-    objetosACargar.Add(new DatosObjeto
-    {
-        nombreArchivo = "mesadawsink",
-        nombreGameObject = "bacha",
-        posicion = new Vector3(2.786f, 0.447f, 3.409f),
-        rotacion = new Vector3(0, -180, 0),
-        escala = new Vector3(0.71f, 0.71f, 0.71f),
-        colorPrincipal = Color.white
-    });
-
-    objetosACargar.Add(new DatosObjeto
         {
-            nombreArchivo = "horno",
-            nombreGameObject = "horno",
-            posicion = new Vector3(1.621f, 0.378f, 2.915f),
-            rotacion = new Vector3(0, -90, 0),
-            escala = new Vector3(0.71f, 0.71f, 0.71f),
-        colorPrincipal = Color.white
+            nombreArchivo = "pared_lisa",
+            nombreGameObject = "techo",
+            posicion = new Vector3(1.52f, 3f, 4.88f),
+            rotacion = new Vector3(0, 0, 0),
+            escala = new Vector3(4.26f, 0.1f, 50f),
+            colorPrincipal = Color.white
         });
+
+        objetosACargar.Add(new DatosObjeto
+        {
+            nombreArchivo = "pared_lisa",
+            nombreGameObject = "piso",
+            posicion = new Vector3(1.52f, -0.05f, 4.88f),
+            rotacion = new Vector3(0, 0, 0),
+            escala = new Vector3(4.26f, 0.1f, 50f),
+            // Corregido: Dividido por 255f para que no se vea blanco
+            colorPrincipal = new Color(193f / 255f, 154f / 255f, 107f / 255f)
+        });
+
+        objetosACargar.Add(new DatosObjeto
+        {
+            nombreArchivo = "littleOne",
+            nombreGameObject = "muebletv",
+            posicion = new Vector3(3.45f, 0.19f, 6.16f), // Apoya en el suelo (Y = 0.3)
+            rotacion = new Vector3(0, 0, 0),
+            escala = new Vector3(0.55f, 0.6f, 2.8f), // Robusto y proporcional
+                                                     // MarrÃ³n oscuro (Estilo Nogal/Chocolate)
+            colorPrincipal = new Color(101f / 255f, 67f / 255f, 33f / 255f)
+        });
+
+        objetosACargar.Add(new DatosObjeto
+        {
+            nombreArchivo = "pared_lisa",
+            nombreGameObject = "tv",
+            // Techo mueble (0.6) + Mitad altura TV (0.85 / 2 = 0.425) = 1.025
+            posicion = new Vector3(3.55f, 1f, 6.16f),
+            rotacion = new Vector3(0, 90f, 0),
+            escala = new Vector3(1.5f, 0.85f, 0.05f),
+            colorPrincipal = Color.black
+        });
+
+        objetosACargar.Add(new DatosObjeto
+        {
+            nombreArchivo = "inodoro",
+            nombreGameObject = "inodoro",
+    
+            posicion = new Vector3(1.736f, 0.388f, 2.00f),
+            rotacion = new Vector3(0, 90f, 0),
+            escala = new Vector3(0.64f, 0.5f, 0.55f),
+            colorPrincipal = Color.white
+        });
+
+        objetosACargar.Add(new DatosObjeto
+        {
+            nombreArchivo = "bidet",
+            nombreGameObject = "Bidet_Realista",         
+            posicion = new Vector3(2.5f, 0.2f, 2.1f),
+            rotacion = new Vector3(0, 180, 0),
+            escala = new Vector3(0.01f, 0.0075f, 0.01f),
+            colorPrincipal = Color.white
+        });
+
+        objetosACargar.Add(new DatosObjeto
+        {
+            nombreArchivo = "shower1",
+            nombreGameObject = "ducha",
+            posicion = new Vector3(3.165f, 1f, 0.618f),
+            rotacion = new Vector3(0, 180, 0),
+            escala = new Vector3(1f, 1f, 1f),
+            colorPrincipal = Color.white
+        });
+
+        objetosACargar.Add(new DatosObjeto
+        {
+            nombreArchivo = "sink1",
+            nombreGameObject = "lavamanos",
+            posicion = new Vector3(1.77f, 0.557f, 0.434f),
+            rotacion = new Vector3(0, -90, 0),
+            escala = new Vector3(0.75f, 0.85f, 0.82f),
+            colorPrincipal = Color.white
+        });
+
+        objetosACargar.Add(new DatosObjeto
+        {
+            nombreArchivo = "mirror",
+            nombreGameObject = "espejo",
+            posicion = new Vector3(1.77f,1.686f, 0.117f),
+            rotacion = new Vector3(0, -90, 0),
+            escala = new Vector3(0.75f, 0.85f, 0.82f),
+            colorPrincipal = Color.white
+        });
+
+        objetosACargar.Add(new DatosObjeto
+        {
+            nombreArchivo = "mueble_baño",
+            nombreGameObject = "mueblebanio",
+            posicion = new Vector3(3.345f,0.861f, 2.143f),
+            rotacion = new Vector3(0, -180, 0),
+            escala = new Vector3(0.01125f, 0.01125f, 0.01125f),
+            colorPrincipal = Color.white
+        });
+
+        objetosACargar.Add(new DatosObjeto
+        {
+            nombreArchivo = "mesadawsink",
+            nombreGameObject = "bacha",
+            posicion = new Vector3(2.786f, 0.447f, 3.409f),
+            rotacion = new Vector3(0, -180, 0),
+            escala = new Vector3(0.71f, 0.71f, 0.71f),
+            colorPrincipal = Color.white
+        });
+
+        objetosACargar.Add(new DatosObjeto
+            {
+                nombreArchivo = "horno",
+                nombreGameObject = "horno",
+                posicion = new Vector3(1.621f, 0.378f, 2.915f),
+                rotacion = new Vector3(0, -90, 0),
+                escala = new Vector3(0.71f, 0.71f, 0.71f),
+            colorPrincipal = Color.white
+            });
     }
 
     private void CreateLienzo(){
@@ -344,9 +364,10 @@ public class SceneManager : MonoBehaviour {
         objetosInstanciados.Add(nuevoObjeto);
     }
 
-    private void ActualizarMatrices(Matrix4x4 matrizVista){
+    private void ActualizarMatrices(Matrix4x4 matrizVista, Matrix4x4 matrizProyeccion){
         foreach(GameObject o in objetosInstanciados){
-            o.GetComponent<MeshRenderer>().material.SetMatrix("_ViewMatrix", matrizVista); 
+            o.GetComponent<MeshRenderer>().material.SetMatrix("_ViewMatrix", matrizVista);
+            o.GetComponent<MeshRenderer>().material.SetMatrix("_ProjectionMatrix", matrizProyeccion);
         }
     }
 

@@ -30,7 +30,7 @@ public class CamaraPrimeraPersona{
 
         posicion += direccionCaminar * inputAvance;
         posicion += derecha * inputLateral;
-        posicion.y = 1.7f;
+        posicion.y = 1.6f;
 
         Vector3 objetivo = posicion + direccionMirada;
 

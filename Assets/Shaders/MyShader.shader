@@ -25,7 +25,7 @@ Shader "MyShader"
             v2f vert(appdata v)
             {
                 v2f o;
-                o.vertex = mul(mul(_ProjectionMatrix, mul(_ViewMatrix, _ModelMatrix)), v.vertex);
+                o.vertex = mul(mul(/*UNITY_MATRIX_P*/_ProjectionMatrix , mul(/*UNITY_MATRIX_V*/_ViewMatrix, _ModelMatrix)), v.vertex);
                 o.color = v.color;
                 return o;
             }

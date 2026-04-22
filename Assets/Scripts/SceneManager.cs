@@ -298,7 +298,7 @@ public class SceneManager : MonoBehaviour {
             posicion = new Vector3(3.165f, 1.1f, 0.618f),
             rotacion = new Vector3(0, 180, 0),
             escala = new Vector3(1f, 1f, 1f),
-            colorPrincipal = new Color(115f/255f, 115f/255f, 115f/255f), //gris clarito
+            colorPrincipal = new Color(115f/255f, 115f/255f, 115f/255f),
             paletaMateriales = new Dictionary<string, Color>() {
                 {"showerlighter", new Color(115f/255f, 115f/255f, 115f/255f)},
                 {"showerdarker", new Color(0.8f, 0.8f, 0.8f)},
@@ -354,25 +354,24 @@ public class SceneManager : MonoBehaviour {
 
         objetosACargar.Add(new DatosObjeto
         {
-            nombreArchivo = "mesadawsink",
-            nombreGameObject = "bacha",
-            posicion = new Vector3(2.786f, 0.447f, 3.409f),
-            rotacion = new Vector3(0, -180, 0),
-            escala = new Vector3(0.71f, 0.71f, 0.71f),
-            colorPrincipal = Color.white,
-            paletaMateriales = new Dictionary<string, Color>() {
-                { "KitchenCabinetRoundedTexture", new Color(50/255f, 50/255f, 50/255f) }
-            }
-        });
-
-        objetosACargar.Add(new DatosObjeto
-        {
             nombreArchivo = "horno",
             nombreGameObject = "horno",
-            posicion = new Vector3(1.621f, 0.378f, 2.915f),
-            rotacion = new Vector3(0, -90, 0),
-            escala = new Vector3(0.71f, 0.71f, 0.71f),
-            colorPrincipal = Color.white
+            posicion = new Vector3(1.57f, 0.378f, 2.92f),
+            rotacion = new Vector3(0, 0, 0),
+            escala = new Vector3(0.01f, 0.01f, 0.012f),
+            colorPrincipal = Color.white,
+            paletaMateriales = new Dictionary<string, Color>() {
+                {"Line15_1", Color.black},
+                {"Box11_3", new Color(225f/255f, 219f/255f, 219f/255f)},
+                {"Line0911_5", new Color(191f/255f, 48f/255f, 48f/255f)},
+                {"ChamferBox01_6", new Color(195f/255f, 188f/255f, 188f/255f)},
+                {"Box13_8", Color.black},
+                {"Box12_10", Color.black},
+                {"ChamferCyl04_14", new Color(245f/255f, 170f/255f, 10f/255f)},
+                {"Rectangle02_16", new Color(225f/255f, 219f/255f, 219f/255f)},
+                {"Line22_20", Color.grey},
+                {"Rectangle07_55", Color.gray}
+            }
         });
 
         objetosACargar.Add(new DatosObjeto
@@ -406,6 +405,39 @@ public class SceneManager : MonoBehaviour {
             colorPrincipal = new Color(48/255f, 48/255f, 48/255f)
         });
 
+        objetosACargar.Add(new DatosObjeto
+        {
+            nombreArchivo = "sink",
+            nombreGameObject = "mesada_bacha",
+            posicion = new Vector3(2.37f, 0.447f, 2.94f),
+            rotacion = new Vector3(0, 0, 0),
+            escala = new Vector3(0.01f, 0.01f, 0.011f),
+            colorPrincipal = Color.white,
+            paletaMateriales = new Dictionary<string, Color>() {
+                {"Box27_3", new Color(225f/255f, 219f/255f, 219f/255f)}, 
+                {"Line50_9", new Color(95f/255f, 93f/255f, 93f/255f)},//gris ocsuro 
+                {"Rectangle10_12", new Color(199f/255f, 193f/255f, 193f/255f)},
+                {"Box272_4", new Color(191f/255f, 48f/255f, 48f/255f)}, //rojo
+                {"Loft10_1", Color.white}
+            }
+        });
+
+        objetosACargar.Add(new DatosObjeto
+        {
+            nombreArchivo = "alacena_baja",
+            nombreGameObject = "alacena_baja",
+            posicion = new Vector3(3.2f, 0.38f, 2.94f),
+            rotacion = new Vector3(0, 0, 0),
+            escala = new Vector3(0.01f, 0.01f, 0.011f),
+            colorPrincipal = Color.white,
+            paletaMateriales = new Dictionary<string, Color>() {
+                {"Loft16_1", new Color(225f/255f, 219f/255f, 219f/255f)}, 
+                {"Box52_3", new Color(191f/255f, 48f/255f, 48f/255f)},
+                {"Box522_4", new Color(199f/255f, 193f/255f, 193f/255f)},
+                {"Line67_10", new Color(95f/255f, 93f/255f, 93f/255f)}
+            }
+        });
+
         GenerarPisoFlotante();
     }
 
@@ -423,11 +455,6 @@ public class SceneManager : MonoBehaviour {
         GameObject nuevoObjeto = new GameObject(datos.nombreGameObject);
         nuevoObjeto.AddComponent<MeshFilter>().mesh = new Mesh();
         nuevoObjeto.AddComponent<MeshRenderer>();
-        
-        /*Color[] coloresDeVertices = new Color[parser.vertices.Length];
-        for (int i = 0; i < coloresDeVertices.Length; i++){
-            coloresDeVertices[i] = datos.colorPrincipal; 
-        }*/
 
         nuevoObjeto.GetComponent<MeshFilter>().mesh.vertices = parser.vertices;
         nuevoObjeto.GetComponent<MeshFilter>().mesh.triangles = parser.triangles;

@@ -53,7 +53,7 @@ public static class MVP {
     public static Matrix4x4 CreateViewMatrix(Vector3 position, Vector3 target, Vector3 up){
         Vector3 forward = (target - position).normalized;
         up = up.normalized;
-        /* Regla de la mano derecha */
+        /* Regla de la mano izquierda */
         Vector3 right = Vector3.Cross(up, forward).normalized;
         up = Vector3.Cross(forward, right).normalized;
 

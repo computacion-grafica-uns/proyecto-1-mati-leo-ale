@@ -269,9 +269,9 @@ public class SceneManager : MonoBehaviour {
             posicion = new Vector3(1.736f, 0.388f, 2.00f),
             rotacion = new Vector3(0, 90f, 0),
             escala = new Vector3(0.64f, 0.5f, 0.55f),
-            colorPrincipal = Color.white,
+            colorPrincipal = new Color(240 / 255f, 240 / 255f, 240 / 255f),
             paletaMateriales = new Dictionary<string, Color>() {
-                {"toilet", Color.white},
+                {"toilet",new Color(240/255f,240/255f,240/255f)},
                 {"toilet2handle", new Color(140f/255f, 140f/255f, 140f/255f)}
             }
 });
@@ -283,9 +283,9 @@ public class SceneManager : MonoBehaviour {
             posicion = new Vector3(2.5f, 0.2f, 2.1f),
             rotacion = new Vector3(0, 180, 0),
             escala = new Vector3(0.01f, 0.0075f, 0.01f),
-            colorPrincipal = Color.white,
+            colorPrincipal = new Color(240/ 255f, 240 / 255f, 240 / 255f),
             paletaMateriales = new Dictionary<string, Color>() {
-                {"Rectangle02_1",new Color(1,1,1)},
+                {"Rectangle02_1",new Color(240/255f,240/255f,240/255f)},
                 {"Cylinder02_2", new Color(140f/255f, 140f/255f, 140f/255f)}
                 
             }
@@ -315,10 +315,10 @@ public class SceneManager : MonoBehaviour {
             posicion = new Vector3(1.77f, 0.557f, 0.434f),
             rotacion = new Vector3(0, -90, 0),
             escala = new Vector3(0.75f, 0.85f, 0.82f),
-            colorPrincipal = Color.white,
+            colorPrincipal = new Color(240 / 255f, 240 / 255f, 240 / 255f),
             paletaMateriales = new Dictionary<string, Color>() {
                 { "sinkdarker", new Color(0.8f, 0.8f, 0.8f) }, 
-                { "sinklighter", Color.white },                
+                { "sinklighter", new Color(240/255f,240/255f,240/255f) },                
                 { "sinkblack", Color.black }                   
             }
         });
@@ -341,14 +341,14 @@ public class SceneManager : MonoBehaviour {
         {
             nombreArchivo = "mueble_baño",
             nombreGameObject = "mueblebanio",
-            posicion = new Vector3(3.345f,0.861f, 2.143f),
+            posicion = new Vector3(3.345f,0.9f, 2.143f),
             rotacion = new Vector3(0, -180, 0),
             escala = new Vector3(0.01125f, 0.01125f, 0.01125f),
-            colorPrincipal = Color.white,
+            colorPrincipal = new Color(5 / 255f, 5 / 255f, 5 / 255f),
             paletaMateriales = new Dictionary<string, Color>() {
-                { "Cylinder60_1", new Color(1,1,1) },
-                { "Cylinder57_6", Color.black },
-                { "Cylinder67_7", Color.yellow }
+                { "Cylinder60_1", new Color(189 / 255f, 188 / 255f, 107 / 255f) },
+                { "Cylinder57_6", new Color(5/255f, 5/255f, 5/255f) },
+                { "Cylinder67_7",new Color(5/255f, 5/255f, 5/255f) }
             }
         });
 
@@ -359,17 +359,17 @@ public class SceneManager : MonoBehaviour {
             posicion = new Vector3(1.57f, 0.378f, 2.92f),
             rotacion = new Vector3(0, 0, 0),
             escala = new Vector3(0.01f, 0.01f, 0.012f),
-            colorPrincipal = Color.white,
+            colorPrincipal = new Color(5 / 255f, 5 / 255f, 5 / 255f),
             paletaMateriales = new Dictionary<string, Color>() {
-                {"Line15_1", Color.black},
-                {"Box11_3", new Color(225f/255f, 219f/255f, 219f/255f)},
-                {"Line0911_5", new Color(191f/255f, 48f/255f, 48f/255f)},
-                {"ChamferBox01_6", new Color(195f/255f, 188f/255f, 188f/255f)},
+                {"Line15_1",new Color(5/255f, 5/255f, 5/255f)},
+                {"Box11_3", new Color(5/255f, 5/255f, 5/255f)},
+                {"Line0911_5", new Color(189/255f, 188/255f, 107/255f)},
+                {"ChamferBox01_6",Color.gray},
                 {"Box13_8", Color.black},
-                {"Box12_10", Color.black},
-                {"ChamferCyl04_14", new Color(245f/255f, 170f/255f, 10f/255f)},
+                {"Box12_10",new Color(5/255f, 5/255f, 5/255f)},
+                {"ChamferCyl04_14", Color.black},
                 {"Rectangle02_16", new Color(225f/255f, 219f/255f, 219f/255f)},
-                {"Line22_20", Color.grey},
+                {"Line22_20", Color.gray},
                 {"Rectangle07_55", Color.gray}
             }
         });
@@ -383,8 +383,8 @@ public class SceneManager : MonoBehaviour {
             escala = new Vector3(0.3760522f, 0.2801863f, 0.3643649f),
             colorPrincipal = Color.white,
             paletaMateriales = new Dictionary<string, Color>() {
-                {"Material", new Color(1f,0f, 0f)},
-                {"Aluminum", new Color(0f, 1f, 0f)}
+                {"Material", new Color(38/255f, 38/255f, 38/255f)},
+                {"Aluminum", Color.white}
             }
         });
 
@@ -398,10 +398,10 @@ public class SceneManager : MonoBehaviour {
             escala = new Vector3(0.01f, 0.01f, 0.011014f),
             colorPrincipal = Color.white,
             paletaMateriales = new Dictionary<string, Color>() {
-                {"Box17_1", new Color(1f, 0f, 0f)},
+                {"Box17_1", new Color(5/255f, 5/255f, 5/255f)},
                 {"Box172_2", new Color(0f, 1f, 0f)},
-                {"Loft08_4", new Color(0f, 0f, 1f)},
-                {"Box16_5", Color.yellow}
+                {"Loft08_4",new Color(38/255f, 38/255f, 38/255f)},
+                {"Box16_5",  new Color(189/255f, 188/255f, 107/255f)}
             }
         });
 
@@ -414,10 +414,10 @@ public class SceneManager : MonoBehaviour {
             escala = new Vector3(0.01f, 0.01f, 0.011014f),
             colorPrincipal = Color.white,
             paletaMateriales = new Dictionary<string, Color>() {
-                {"Box17_1", new Color(1f, 0f, 0f)},
+                {"Box17_1", new Color(5/255f, 5/255f, 5/255f)},
                 {"Box172_2", new Color(0f, 1f, 0f)},
-                {"Loft08_4", new Color(0f, 0f, 1f)},
-                {"Box16_5", Color.yellow}
+                {"Loft08_4",new Color(38/255f, 38/255f, 38/255f)},
+                {"Box16_5",  new Color(189/255f, 188/255f, 107/255f)}
             }
         });
 
@@ -437,12 +437,12 @@ public class SceneManager : MonoBehaviour {
             nombreGameObject = "mesada_bacha",
             posicion = new Vector3(2.37f, 0.447f, 2.94f),
             rotacion = new Vector3(0, 0, 0),
-            escala = new Vector3(0.01f, 0.01f, 0.011f),
+            escala = new Vector3(0.0103f, 0.01f, 0.011f),
             colorPrincipal = Color.white,
             paletaMateriales = new Dictionary<string, Color>() {
-                {"Box27_3", new Color(5/255f, 5/255f, 5/255f)}, 
+                {"Box27_3", new Color(38/255f, 38/255f, 38/255f)}, 
                 {"Line50_9", new Color(5/255f, 5/255f, 5/255f)},//gris ocsuro 
-                {"Rectangle10_12", new Color(199f/255f, 193f/255f, 193f/255f)},
+                {"Rectangle10_12",  new Color(100/255f, 100/255f, 100/255f)},
                 {"Box272_4", new Color(38/255f, 38/255f, 38/255f)}, //rojo
                 {"Loft10_1", new Color(5/255f, 5/255f, 5/255f)}
             }
@@ -454,7 +454,7 @@ public class SceneManager : MonoBehaviour {
             nombreGameObject = "alacena_baja",
             posicion = new Vector3(3.2f, 0.38f, 2.94f),
             rotacion = new Vector3(0, 0, 0),
-            escala = new Vector3(0.01f, 0.01f, 0.011f),
+            escala = new Vector3(0.0103f, 0.01f, 0.011f),
             colorPrincipal = Color.white,
             paletaMateriales = new Dictionary<string, Color>() {
                 {"Loft16_1",new Color(5/255f, 5/255f, 5/255f)}, 
@@ -473,8 +473,8 @@ public class SceneManager : MonoBehaviour {
             escala = new Vector3(0.0075605f, 0.012252f, 0.008f),
             colorPrincipal = Color.white,
             paletaMateriales = new Dictionary<string, Color>() {
-                {"ChamferBox01_1", new Color(1f, 0f, 0f)},
-                {"Box35_2", new Color(0f, 1f, 0f)}
+                {"ChamferBox01_1",  new Color(5/255f, 5/255f, 5/255f)},
+                {"Box35_2", new Color(48/255f, 27/255f, 8/255f)}
             }
         });
 
@@ -487,8 +487,8 @@ public class SceneManager : MonoBehaviour {
             escala = new Vector3(0.01222f, 0.01f, 0.01f),
             colorPrincipal = Color.white,
             paletaMateriales = new Dictionary<string, Color>() {
-                {"paper", new Color(1f, 0f, 0f)},
-                {"wood", new Color(0f, 1f, 0f)}
+                {"paper", new Color(189/255f, 188/255f, 107/255f)},
+                {"wood", new Color(5/255f, 5/255f, 5/255f)}
             }
         });
 
@@ -557,8 +557,8 @@ public class SceneManager : MonoBehaviour {
             escala = new Vector3(0.01547887f, 0.01f, 0.01f),
             colorPrincipal = Color.white,
             paletaMateriales = new Dictionary<string, Color>() {
-                {"white", new Color(1f, 0f, 0f)},
-                {"tan", new Color(0f, 1f, 0f)}
+                {"white", new Color(5/255f, 5/255f, 5/255f)},
+                {"tan", new Color(189/255f, 188/255f, 107/255f)}
             }
         });
 
@@ -601,9 +601,9 @@ public class SceneManager : MonoBehaviour {
             escala = new Vector3(0.08271708f, 0.097143f, 0.07326705f),
             colorPrincipal = Color.white,
             paletaMateriales = new Dictionary<string, Color>() {
-                {"white", new Color(1f, 0f, 0f)},
-                {"Glass", new Color(0f, 1f, 0f)},
-                {"cold_steel", new Color(0f, 0f, 1f)}
+                {"white", new Color(5/255f, 5/255f, 5/255f)},
+                {"Glass", new Color(147/255f, 255/255f, 255/255f)},
+                {"cold_steel",  new Color(189/255f, 188/255f, 107/255f)}
             }
         });
 

@@ -22,7 +22,7 @@ public class SceneManager : MonoBehaviour {
             InstanciarYConfigurarObjeto(datos);
         }
         CreateLienzo();
-        camaraOrbital = new CamaraOrbital(new Vector3(1.6f, 0f, 4.9f), 15f);
+        camaraOrbital = new CamaraOrbital(new Vector3(1.6f, 0f, 4.9f), 12f);
         camaraPrimeraPersona = new CamaraPrimeraPersona(Vector3.zero);
         float aspect = (float)Screen.width / (float)Screen.height;
         Matrix4x4 matrizVistaInicial = camaraOrbital.CalcularMatrizVista(0, 0);
@@ -50,16 +50,16 @@ public class SceneManager : MonoBehaviour {
         float inputLateral = 0f;
 
         // Flechas para rotar (solo lo usa la cámara Orbital)
-        if (Input.GetKey(KeyCode.RightArrow)) deltaPhi += 0.01f;
-        if (Input.GetKey(KeyCode.LeftArrow))  deltaPhi -= 0.01f;
-        if (Input.GetKey(KeyCode.UpArrow))    deltaTheta -= 0.01f; 
-        if (Input.GetKey(KeyCode.DownArrow))  deltaTheta += 0.01f;
+        if (Input.GetKey(KeyCode.RightArrow)) deltaPhi += 0.02f;
+        if (Input.GetKey(KeyCode.LeftArrow))  deltaPhi -= 0.02f;
+        if (Input.GetKey(KeyCode.UpArrow))    deltaTheta -= 0.02f; 
+        if (Input.GetKey(KeyCode.DownArrow))  deltaTheta += 0.02f;
 
         // WASD para moverse (solo lo usa la cámara Primera Persona)
-        if (Input.GetKey(KeyCode.W)) inputAvance += 0.01f;
-        if (Input.GetKey(KeyCode.S)) inputAvance -= 0.01f;
-        if (Input.GetKey(KeyCode.D)) inputLateral += 0.01f;
-        if (Input.GetKey(KeyCode.A)) inputLateral -= 0.01f;
+        if (Input.GetKey(KeyCode.W)) inputAvance += 0.02f;
+        if (Input.GetKey(KeyCode.S)) inputAvance -= 0.02f;
+        if (Input.GetKey(KeyCode.D)) inputLateral += 0.02f;
+        if (Input.GetKey(KeyCode.A)) inputLateral -= 0.02f;
 
         // Mouse para mirar (solo lo usa la cámara Primera Persona)
         float sensibilidadMouse = 0.02f;

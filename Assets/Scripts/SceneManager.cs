@@ -240,14 +240,16 @@ public class SceneManager : MonoBehaviour {
 
         objetosACargar.Add(new DatosObjeto
         {
-            nombreArchivo = "littleOne",
+            nombreArchivo = "littleOne2",
             nombreGameObject = "muebletv",
             posicion = new Vector3(3.45f, 0.19f, 6.2f), // Apoya en el suelo (Y = 0.3)
-            rotacion = new Vector3(0, 0, 0),
+            rotacion = new Vector3(0, 180, 0),
             escala = new Vector3(0.55f, 0.6f, 2.8f), 
             colorPrincipal = new Color(101f / 255f, 67f / 255f, 33f / 255f),
             paletaMateriales = new Dictionary<string, Color>() {
-                {"littleOneTexture", new Color(80f / 255f, 50f / 255f, 20f / 255f)}
+                {"littleOneTexture", new Color(80f / 255f, 50f / 255f, 20f / 255f)},
+                {"cajones", new Color(43/255f, 24/255f, 8/255f) },
+                {"Manijas", new Color(5/255f, 5/255f, 5/255f)}
             }
         });
 
@@ -376,7 +378,7 @@ public class SceneManager : MonoBehaviour {
 
         objetosACargar.Add(new DatosObjeto
         {
-            nombreArchivo = "heladera",
+            nombreArchivo = "heladera1",
             nombreGameObject = "heladera", 
             posicion = new Vector3(3.163f, 1f, 4.625f),
             rotacion = new Vector3(0, -90, 0),
@@ -384,7 +386,8 @@ public class SceneManager : MonoBehaviour {
             colorPrincipal = Color.white,
             paletaMateriales = new Dictionary<string, Color>() {
                 {"Material", new Color(38/255f, 38/255f, 38/255f)},
-                {"Aluminum", Color.white}
+                {"Aluminum", new Color(38/255f, 38/255f, 38/255f)},
+                {"Manija", Color.black }
             }
         });
 
